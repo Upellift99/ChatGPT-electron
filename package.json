@@ -8,7 +8,7 @@
 		"package-win": "electron-packager . ChatGPT-electron --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/icon.ico --executable-name=ChatGPT-electron --prune=true --out=release-builds",
 		"package-linux": "electron-packager . ChatGPT-electron --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/icon.png --executable-name=ChatGPT-electron --prune=true --out=release-builds",
 		"package-mac": "electron-packager . ChatGPT -electron--overwrite --asar=true --platform=darwin --arch=x64 --icon=assets/icons/icon.icns --executable-name=ChatGPT-electron --prune=true --out=release-builds",
-		"deb": "electron-installer-debian --src release-builds/ChatGPT-electron-linux-x64/ --dest dist/installers/ --arch amd64"
+		"deb": "electron-installer-debian --src release-builds/ChatGPT-electron-linux-x64/ --dest dist/installers/ --arch amd64 --icon assets/icons/icon.png"
 	},
 	"author": "Jériel",
 	"license": "MIT",
