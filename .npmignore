@@ -1,0 +1,11 @@
+# Exclure les fichiers inutiles
+dist/
+logs/
+*.map
+tmp/
+.vscode/
+
+# Exclure les dépendances inutiles
+test/
+docs/
+*.md
