@@ -48,7 +48,7 @@ Une application Electron non officielle pour accéder à ChatGPT depuis un ordin
 1. Clonez le dépôt :
    ```bash
    git clone https://github.com/Upellift99/ChatGPT-electron.git
-   cd ChatGPT-electron/src
+   cd ChatGPT-electron
    ```
 2. Installez les dépendances :
    ```bash
@@ -79,19 +79,12 @@ Les fichiers binaires seront générés dans le dossier `release-builds/`.
    npm install --save-dev electron-installer-debian
    ```
 
-2. Ajoutez ce script dans `package.json` si ce n'est pas déjà fait :
-   ```json
-   "scripts": {
-       "deb": "electron-installer-debian --src release-builds/ChatGPT-linux-x64/ --dest dist/installers/ --arch amd64"
-   }
-   ```
-
-3. Exécutez la commande pour créer le paquet `.deb` :
+2. Exécutez la commande pour créer le paquet `.deb` :
    ```bash
    npm run deb
    ```
 
-4. Le paquet `.deb` sera disponible dans le dossier `dist/installers/`.
+3. Le paquet `.deb` sera disponible dans le dossier `dist/installers/`.
 
 ---
 
