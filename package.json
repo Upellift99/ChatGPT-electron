@@ -4,17 +4,26 @@
 	"description": "An unofficial desktop app for ChatGPT working on Electron",
 	"main": "main.js",
 	"scripts": {
-		"start": "electron .",
-		"package-win": "electron-packager . ChatGPT-electron --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/icon.ico --executable-name=ChatGPT-electron --prune=true --out=release-builds --ignore=\"dist|logs|\\.map$|tmp|\\.vscode\"",
-		"package-linux": "electron-packager . ChatGPT-electron --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/icon.png --executable-name=ChatGPT-electron --prune=true --out=release-builds --ignore=\"dist|logs|\\.map$|tmp|\\.vscode\"",
-		"package-mac": "electron-packager . ChatGPT -electron--overwrite --asar --platform=darwin --arch=x64 --icon=assets/icons/icon.icns --executable-name=ChatGPT-electron --prune=true --out=release-builds --ignore=\"dist|logs|\\.map$|tmp|\\.vscode\"",
-		"deb": "electron-installer-debian --src release-builds/ChatGPT-electron-linux-x64/ --dest dist/installers/ --arch amd64 --icon assets/icons/icon.png --prune"
+	  "start": "electron .",
+	  "package-win": "electron-packager . ChatGPT-electron --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/icon.ico --executable-name=ChatGPT-electron --prune=true --out=release-builds --ignore=\"dist|logs|\\.map$|tmp|\\.vscode\"",
+	  "package-linux": "electron-packager . ChatGPT-electron --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/icon.png --executable-name=ChatGPT-electron --prune=true --out=release-builds --ignore=\"dist|logs|\\.map$|tmp|\\.vscode\"",
+	  "package-mac": "electron-packager . ChatGPT-electron --overwrite --asar --platform=darwin --arch=x64 --icon=assets/icons/icon.icns --executable-name=ChatGPT-electron --prune=true --out=release-builds --ignore=\"dist|logs|\\.map$|tmp|\\.vscode\"",
+	  "deb": "electron-installer-debian --src release-builds/ChatGPT-electron-linux-x64/ --dest dist/installers/ --arch amd64 --icon assets/icons/icon.png --prune",
+	  "package-appimage": "electron-builder --linux AppImage"
 	},
 	"author": "Jériel",
 	"license": "MIT",
 	"devDependencies": {
-		"electron": "^25.3.1",
-		"electron-installer-debian": "^3.2.0",
-		"electron-packager": "^17.1.0"
+	  "electron": "^25.3.1",
+	  "electron-installer-debian": "^3.2.0",
+	  "electron-packager": "^17.1.0",
+	  "electron-builder": "^23.0.0"
+	},
+	"build": {
+	  "appId": "io.github.Upellift99.ChatGPT-electron",
+	  "linux": {
+		"target": "AppImage",
+		"icon": "assets/icons/icon.png"
+	  }
 	}
-}
+  }

@@ -86,6 +86,14 @@ Les fichiers binaires seront générés dans le dossier `release-builds/`.
 
 3. Le paquet `.deb` sera disponible dans le dossier `dist/installers/`.
 
+#### **Générer un paquet .AppImage pour Linux**
+   ```bash
+   npm install
+   npm run package-appimage
+   ```
+
+Le paquet `.AppImage` sera disponible dans le dossier `dist/`.
+
 ---
 
 ### **Générer les icônes**
