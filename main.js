@@ -20,6 +20,10 @@ const ALLOWED_DOMAINS = [
 	'https://unpkg.com',
 	'https://browser-intake-datadoghq.com',
 	'https://auth0.openai.com',
+
+	'https://www.apple.com',
+	'https://appleid.cdn-apple.com',
+	'https://appleid.apple.com',
 ];
 
 function createWindow() {

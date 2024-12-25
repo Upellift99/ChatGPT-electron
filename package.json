@@ -1,6 +1,6 @@
 {
 	"name": "ChatGPT-electron",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "An unofficial desktop app for ChatGPT working on Electron",
 	"main": "main.js",
 	"scripts": {
