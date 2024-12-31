@@ -1,98 +1,63 @@
-const { app, BrowserWindow, Tray, Menu, shell } = require('electron');
+const { app, BrowserWindow, session, Tray, Menu } = require('electron');
 const path = require('path');
 
 let mainWindow;
 let tray;
 
-// Définir le nom de domaine principal
+// Définir le domaine principal
 const DOMAIN = 'https://chat.openai.com';
 
-// Tableau des domaines autorisés
-const ALLOWED_DOMAINS = [
-	DOMAIN,
-	'https://ab.chatgpt.com',
-	'https://cdn.oaistatic.com',
-	'https://chatgpt.com',
-	'https://cdn.auth0.com',
-	'https://cdn.jsdelivr.net',
-	'https://cdnjs.cloudflare.com',
-	'https://cdn.openai.com',
-	'https://unpkg.com',
-	'https://browser-intake-datadoghq.com',
-	'https://auth0.openai.com',
-
-	'https://www.apple.com',
-	'https://appleid.cdn-apple.com',
-	'https://appleid.apple.com',
-];
-
+// Fonction pour créer la fenêtre principale
 function createWindow() {
 	mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: 1200,
+		height: 800,
 		webPreferences: {
-			preload: path.join(__dirname, 'preload.js'),
+			partition: 'persist:main', // Utiliser une session persistante pour les cookies
 			contextIsolation: true,
 			enableRemoteModule: false,
 			nodeIntegration: false,
 			webviewTag: false,
-			devTools: false,
 			sandbox: true,
 		},
-		icon: path.join(__dirname, 'assets/icons/icon.png'),
+		icon: path.join(__dirname, 'assets/icons/icon.png'), // Icône de la fenêtre
 	});
 
-	// Charger l'URL principale
-	mainWindow.loadURL(DOMAIN);
+	// Désactiver la barre de menu
 	mainWindow.setMenu(null);
+
+	// Charger le domaine principal
+	mainWindow.loadURL(DOMAIN);
+
+	// Ouvrir les DevTools (facultatif pour le débogage)
 	// mainWindow.webContents.openDevTools();
 
-	// Ajouter la gestion de la barre système
-	mainWindow.on('close', (event) => {
-		if (!app.isQuiting) {
-			event.preventDefault();
-			mainWindow.hide();
-		}
+	// Capturer les cookies lorsque l'utilisateur se connecte
+	session.defaultSession.cookies.on('changed', (event, cookie) => {
+		console.log('Cookie détecté:', cookie);
 	});
-	createTray();
 
-	// Ajout d'une Content-Security-Policy (CSP)
-	mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-		const csp = `
-			default-src 'self' ${ALLOWED_DOMAINS.join(' ')};
-			script-src 'self' 'unsafe-inline' ${ALLOWED_DOMAINS.join(' ')};
-			style-src 'self' ${ALLOWED_DOMAINS.join(' ')} data: 'unsafe-inline';
-			img-src 'self' ${ALLOWED_DOMAINS.join(' ')} data:;
-			font-src 'self' ${ALLOWED_DOMAINS.join(' ')} data:;
-			worker-src 'self' blob:;
-			object-src 'none';
-			`.replace(/\s+/g, ' '); // Supprime les retours à la ligne pour éviter les erreurs
-
-		callback({
-			responseHeaders: {
-				...details.responseHeaders,
-				'Content-Security-Policy': [csp]
-			}
+	// Gérer les erreurs de chargement
+	mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+		console.error('Erreur de chargement:', {
+			errorCode,
+			errorDescription,
+			validatedURL,
 		});
 	});
 
-	// Gestion des ouvertures de fenêtres (URL autorisées uniquement)
-	mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-		if (ALLOWED_DOMAINS.some(domain => url.startsWith(domain))) {
-			return { action: 'allow' };
+	// Gérer la fermeture de la fenêtre (minimiser dans la barre système)
+	mainWindow.on('close', (event) => {
+		if (!app.isQuiting) {
+			event.preventDefault();
+			mainWindow.hide(); // Cache la fenêtre au lieu de la fermer
 		}
-		shell.openExternal(url);
-		return { action: 'deny' };
-	});
-
-	// Gestion des erreurs de chargement
-	mainWindow.webContents.on('did-fail-load', () => {
-		mainWindow.loadFile(path.join(__dirname, 'static', 'error.html'));
 	});
 }
 
+// Fonction pour créer l'icône dans la barre système (tray)
 function createTray() {
-	const trayIcon = path.join(__dirname, 'assets/icons/icon-small.png');
+	const trayIcon = path.join(__dirname, 'assets/icons/icon-small.png'); // Icône du tray
 	tray = new Tray(trayIcon);
 
 	const contextMenu = Menu.buildFromTemplate([
@@ -114,9 +79,10 @@ function createTray() {
 		},
 	]);
 
-	tray.setToolTip('ChatGPT-electron');
+	tray.setToolTip('ChatGPT-electron'); // Info-bulle du tray
 	tray.setContextMenu(contextMenu);
 
+	// Afficher la fenêtre lorsque l'utilisateur clique sur l'icône du tray
 	tray.on('click', () => {
 		if (mainWindow) {
 			mainWindow.show();
@@ -125,7 +91,11 @@ function createTray() {
 	});
 }
 
-app.on('ready', createWindow);
+// Gestion des événements d'application
+app.on('ready', () => {
+	createWindow(); // Créer la fenêtre principale
+	createTray(); // Créer l'icône dans la barre système
+});
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {

@@ -1,6 +1,6 @@
 {
 	"name": "ChatGPT-electron",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "An unofficial desktop app for ChatGPT working on Electron",
 	"main": "main.js",
 	"scripts": {
@@ -15,9 +15,9 @@
 	"license": "MIT",
 	"devDependencies": {
 		"electron": "^25.3.1",
+		"electron-builder": "^23.0.0",
 		"electron-installer-debian": "^3.2.0",
-		"electron-packager": "^17.1.0",
-		"electron-builder": "^23.0.0"
+		"electron-packager": "^17.1.0"
 	},
 	"build": {
 		"appId": "io.github.Upellift99.ChatGPT-electron",
@@ -31,6 +31,17 @@
 		"directories": {
 			"output": "dist"
 		},
-		"files": [ "**/*", "!**/*.map", "!**/tmp", "!**/logs", "!**/.vscode", "!**/flatpak-build", "!**/flatpak-build/**"]
+		"files": [
+			"**/*",
+			"!**/*.map",
+			"!**/tmp",
+			"!**/logs",
+			"!**/.vscode",
+			"!**/flatpak-build",
+			"!**/flatpak-build/**"
+		]
+	},
+	"dependencies": {
+		"puppeteer": "^23.11.1"
 	}
 }

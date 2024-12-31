@@ -50,7 +50,8 @@ Une application Electron non officielle pour accéder à ChatGPT depuis un ordin
    git clone https://github.com/Upellift99/ChatGPT-electron.git
    cd ChatGPT-electron
    ```
-2. Installez les dépendances :
+2. Installez Node.js : https://nodejs.org/fr/download
+3. Installez les dépendances :
    ```bash
    npm install
    ```
